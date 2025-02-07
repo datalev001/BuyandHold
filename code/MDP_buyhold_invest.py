@@ -10,120 +10,6 @@ pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 import yfinance as yf
 
-def getdatabyday(tiklst, st, ed):
-    download_data = pd.DataFrame([])
-    interval = '1d'
-    LLL = len(tiklst)
-    KKK = 1
-    
-    for tk in tiklst:
-        stock = yf.Ticker(tk)
-        stock_data = \
-        stock.history(start = st, end = ed, interval= '1d').reset_index()
-        if len(stock_data) > 0:
-            stock_data['ticker'] = tk
-            download_data = pd.concat([download_data, stock_data])
-            print ('daily data tickname: ', tk)
-            KKK += 1
-        
-    download_data = download_data.sort_values(['ticker', 'Date'], ascending = [1, 0])
-    z = download_data['Date'].astype(str)
-    download_data['Date'] = z
-    dya_c = ['ticker', 'Date', 'Open', 'High', 'Low', 'Close', 'Volume']
-    
-    download_data = download_data[dya_c]
-    tm_frame = pd.DataFrame(list(set(download_data['Date'])), columns = ['Date'])
-    tm_frame = tm_frame.sort_values(['Date'], ascending = False)
-    tm_frame['dayseq'] = range(1, len(tm_frame) + 1)
-    download_data = pd.merge(download_data, tm_frame, on= ['Date'] , how='inner')
-    download_data = download_data.sort_values(['ticker', 'Date'], ascending = [False, False])
-    return download_data
-
-tks = [       'jpm', 'ma', 'crm', , 'qcom', 'wmt', 'QQQ', 'SPY']
-
-day_data = getdatabyday(tks, '2019-10-01', '2024-12-31')
-
-day_data.shape
-'''
-(34346, 8)
-'''
-
-day_data.dtypes
-'''
-ticker     object
-Date       object
-Open      float64
-High      float64
-Low       float64
-Close     float64
-Volume      int64
-dayseq      int64
-'''
-
-day_data.isnull().sum()
-'''
-ticker    0
-Date      0
-Open      0
-High      0
-Low       0
-Close     0
-Volume    0
-dayseq    0
-dtype: int64
-'''
-
-list(day_data.columns)
-'''
-['ticker', 'Date', 'Open', 'High',
- 'Low', 'Close', 'Volume', 'dayseq']
-'''
-day_data.ticker.value_counts()
-
-'''
-zs      1321
-wmt     1321
-SPY     1321
-aapl    1321
-abbv    1321
-acn     1321
-amzn    1321
-anet    1321
-asml    1321
-crm     1321
-crwd    1321
-goog    1321
-isrg    1321
-jpm     1321
-lly     1321
-ma      1321
-meta    1321
-mrvl    1321
-msft    1321
-now     1321
-orcl    1321
-panw    1321
-qcom    1321
-tmo     1321
-tsm     1321
-QQQ     1321
-'''
-day_data.Date.min()
-
-'''
-'2019-10-01 00:00:00-04:00'
-'''
-
-day_data.Date.max()
-'''
-'2024-12-30 00:00:00-05:00'
-'''
-
-
-import pandas as pd
-import numpy as np
-from datetime import datetime
-import yfinance as yf
 
 # ------------------------------------------------------------------------------
 # 1. Download Real Data from Yahoo Finance
@@ -145,9 +31,7 @@ def getdatabyday(tiklst, st, ed):
     return download_data
 
 # List of tickers including individual stocks and ETFs.
-tks = ['goog', 'meta', 'msft', 'amzn', 'aapl', 'zs', 'panw', 'isrg',
-       'jpm', 'ma', 'crm', 'asml','crwd', 'tsm', 'now', 'lly', 'acn',
-       'tmo', 'abbv','anet','orcl', 'mrvl', 'qcom', 'wmt', 'QQQ', 'SPY']
+tks = [.....'QQQ', 'SPY']
 
 # Download data (example period: 2019-10-01 to 2024-12-31)
 day_data = getdatabyday(tks, '2019-10-01', '2024-12-31')
